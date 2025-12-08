@@ -643,11 +643,883 @@
         @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes slideInLeft { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
+        /* --- CUSTOM SCROLLBAR --- */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(26, 11, 46, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 10px;
+            border: 2px solid rgba(26, 11, 46, 0.5);
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(224, 176, 255, 0.8);
+        }
+
+        /* Firefox scrollbar */
+        * {
+            scrollbar-color: var(--accent) rgba(26, 11, 46, 0.5);
+            scrollbar-width: thin;
+        }
+
+        /* --- SKELETON LOADER --- */
+        .skeleton {
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0.05) 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .card-img.loading {
+            height: 220px;
+            width: 100%;
+            background-color: rgba(255,255,255,0.05);
+            animation: shimmer 2s infinite;
+        }
+
+        /* --- SEARCH & FILTER SECTION --- */
+        .search-filter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(224, 176, 255, 0.3);
+            border-radius: 25px;
+            color: var(--text-white);
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .search-bar::placeholder {
+            color: rgba(255,255,255,0.4);
+        }
+
+        .search-bar:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(224, 176, 255, 0.3);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .dietary-filters {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .dietary-pill {
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(224, 176, 255, 0.3);
+            border-radius: 20px;
+            color: var(--text-white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .dietary-pill:hover {
+            border-color: var(--accent);
+            background: rgba(224, 176, 255, 0.1);
+        }
+
+        .dietary-pill.active {
+            background: var(--accent);
+            color: var(--bg-dark);
+            border-color: var(--accent);
+        }
+
+        /* --- HEART FAVORITE BUTTON --- */
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0,0,0,0.5);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            z-index: 10;
+            color: rgba(255,255,255,0.6);
+        }
+
+        .favorite-btn:hover {
+            background: rgba(224, 176, 255, 0.2);
+            color: var(--accent);
+        }
+
+        .favorite-btn.favorited {
+            color: #ff4757;
+            background: rgba(255, 71, 87, 0.2);
+        }
+
+        /* --- FLY TO CART ANIMATION --- */
+        .flying-cart-item {
+            position: fixed;
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        /* --- CHECKOUT MODAL STEPS --- */
+        .checkout-modal {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1400;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .checkout-modal.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .checkout-content {
+            background: #2a1b3d;
+            max-width: 600px;
+            width: 100%;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .checkout-modal.open .checkout-content {
+            transform: scale(1);
+        }
+
+        .checkout-step {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .checkout-step.active {
+            display: block;
+        }
+
+        .checkout-header {
+            padding: 20px 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .checkout-progress {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .progress-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.05);
+            border: 2px solid rgba(224, 176, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .progress-indicator.active {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: var(--bg-dark);
+            font-weight: bold;
+        }
+
+        .progress-indicator.completed {
+            background: var(--success);
+            border-color: var(--success);
+            color: var(--bg-dark);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(224, 176, 255, 0.3);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(224, 176, 255, 0.3);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .promo-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .promo-input-group input {
+            flex: 1;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(224, 176, 255, 0.3);
+            border-radius: 8px;
+            color: var(--text-white);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .promo-input-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 10px rgba(224, 176, 255, 0.3);
+        }
+
+        .promo-btn {
+            padding: 12px 20px;
+            background: rgba(224, 176, 255, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+
+        .promo-btn:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .promo-message {
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .promo-message.success {
+            background: rgba(74, 222, 128, 0.2);
+            color: #4ade80;
+            border: 1px solid #4ade80;
+        }
+
+        .promo-message.error {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+            border: 1px solid #ff4757;
+        }
+
+        .order-summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .order-summary-total {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: var(--accent);
+            margin-top: 10px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .discount-line {
+            color: var(--success);
+            font-size: 0.9rem;
+        }
+
+        .receipt {
+            text-align: center;
+            padding: 20px;
+            background: rgba(74, 222, 128, 0.05);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .receipt-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .order-id {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .berry-points-display {
+            background: rgba(224, 176, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+            border: 1px solid rgba(224, 176, 255, 0.3);
+        }
+
+        .berry-points-display .points-number {
+            font-size: 2rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .checkout-btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .checkout-btn-group button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        /* --- GEOLOCATION UI --- */
+        .location-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(224, 176, 255, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .location-status-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        .location-locked {
+            background: rgba(74, 222, 128, 0.1);
+            border: 2px solid var(--success);
+            animation: none;
+        }
+
+        .location-locked .location-status-icon {
+            color: var(--success);
+            animation: none;
+        }
+
+        .location-coords {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            color: var(--accent);
+            font-size: 0.85rem;
+            word-break: break-all;
+        }
+
+        .get-location-btn {
+            width: 100%;
+            padding: 14px;
+            background: rgba(224, 176, 255, 0.2);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .get-location-btn:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .get-location-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .location-loading {
+            display: inline-block;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            opacity: 0.9;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.1);
+            color: var(--text-white);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255,255,255,0.15);
+        }
+
+        /* --- USER PROFILE & AUTHENTICATION --- */
+        .user-icon-trigger {
+            position: fixed;
+            top: 20px;
+            right: 100px;
+            z-index: 1100;
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--accent);
+            padding: 12px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+        }
+
+        .user-icon-trigger:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), #b580ff);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--bg-dark);
+            margin-bottom: 15px;
+            border: 3px solid var(--accent);
+        }
+
+        .profile-modal {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 400px;
+            height: 100vh;
+            background: rgba(26, 11, 46, 0.95);
+            backdrop-filter: blur(15px);
+            border-left: 1px solid var(--accent);
+            z-index: 1300;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: -10px 0 30px rgba(0,0,0,0.5);
+            overflow-y: auto;
+        }
+
+        .profile-modal.open {
+            transform: translateX(0);
+        }
+
+        .profile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .profile-close-btn {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .profile-section {
+            margin-bottom: 30px;
+        }
+
+        .profile-section-title {
+            color: var(--accent);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            opacity: 0.8;
+        }
+
+        .points-display-large {
+            background: rgba(224, 176, 255, 0.1);
+            border: 2px solid var(--accent);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .points-number-large {
+            font-size: 3rem;
+            color: var(--accent);
+            font-weight: bold;
+            font-family: 'Courier New', monospace;
+        }
+
+        .points-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            margin-top: 8px;
+        }
+
+        .order-history-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .order-history-item {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(224, 176, 255, 0.2);
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 0.85rem;
+        }
+
+        .order-history-date {
+            color: var(--accent);
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .order-history-items {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .order-history-total {
+            color: var(--accent);
+            font-weight: bold;
+        }
+
+        .profile-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .profile-tab {
+            padding: 10px 15px;
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.6);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -1px;
+        }
+
+        .profile-tab.active {
+            color: var(--accent);
+            border-bottom-color: var(--accent);
+        }
+
+        .profile-tab-content {
+            display: none;
+        }
+
+        .profile-tab-content.active {
+            display: block;
+        }
+
+        .offers-grid {
+            display: grid;
+            gap: 10px;
+        }
+
+        .offer-card {
+            background: rgba(224, 176, 255, 0.1);
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .offer-card:hover {
+            background: rgba(224, 176, 255, 0.2);
+            transform: translateX(-5px);
+        }
+
+        .offer-text {
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .offer-copy-btn {
+            background: rgba(224, 176, 255, 0.3);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+        }
+
+        .offer-copy-btn:hover {
+            background: var(--accent);
+            color: var(--bg-dark);
+        }
+
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1500;
+            padding: 20px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .login-modal.open {
+            display: flex;
+            opacity: 1;
+        }
+
+        .login-content {
+            background: #2a1b3d;
+            max-width: 450px;
+            width: 100%;
+            border-radius: 20px;
+            padding: 40px;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+            transform: scale(0.8);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+        }
+
+        .login-modal.open .login-content {
+            transform: scale(1);
+        }
+
+        .login-close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+        }
+
+        .login-title {
+            color: var(--accent);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+            font-family: 'Pacifico', cursive;
+        }
+
+        .login-subtitle {
+            color: rgba(255,255,255,0.6);
+            margin-bottom: 30px;
+            font-size: 0.9rem;
+        }
+
+        .login-input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(224, 176, 255, 0.3);
+            border-radius: 8px;
+            color: var(--text-white);
+            margin-bottom: 15px;
+            font-family: 'Poppins', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .login-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(224, 176, 255, 0.3);
+            background: rgba(255,255,255,0.08);
+        }
+
+        .login-input::placeholder {
+            color: rgba(255,255,255,0.3);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: var(--bg-dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .login-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .demo-login-btn {
+            width: 100%;
+            padding: 12px;
+            background: rgba(224, 176, 255, 0.2);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .demo-login-btn:hover {
+            background: rgba(224, 176, 255, 0.3);
+        }
+
+        .login-divider {
+            text-align: center;
+            color: rgba(255,255,255,0.3);
+            margin: 20px 0;
+            font-size: 0.85rem;
+        }
+
         /* --- RESPONSIVE --- */
         @media (max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
             .grid-container { grid-template-columns: 1fr; }
             .cart-sidebar { width: 100%; }
+            .search-filter-container { flex-direction: column; }
+            .dietary-filters { gap: 8px; }
+            .dietary-pill { padding: 6px 12px; font-size: 0.8rem; }
+            .checkout-content { max-width: 90vw; padding: 0; }
+            .checkout-step { padding: 30px 20px; }
+            .checkout-header { padding: 20px; }
+            .profile-modal { width: 100%; }
+            .user-icon-trigger { right: 70px; }
         }
     </style>
 </head>
@@ -669,6 +1541,11 @@
         <div class="cart-count" id="cartCount">0</div>
     </div>
 
+    <!-- User Icon -->
+    <div class="user-icon-trigger" onclick="toggleProfile()" title="Profile">
+        <i data-lucide="user" id="userIconDisplay"></i>
+    </div>
+
     <!-- Cart Sidebar -->
     <div class="cart-sidebar" id="cartSidebar">
         <div class="cart-header">
@@ -683,10 +1560,110 @@
         </div>
         <div class="cart-total-section">
             <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+                <span>Subtotal:</span>
+                <span id="cartSubtotal" style="color: var(--accent); font-weight:bold;">$0.00</span>
+            </div>
+            <div id="discountLine" style="display:none; display:flex; justify-content:space-between; margin-bottom:10px;" class="discount-line">
+                <span>Discount:</span>
+                <span id="discountAmount">-$0.00</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; margin-bottom:15px; padding-bottom:15px; border-bottom: 1px solid rgba(255,255,255,0.1);">
                 <span>Total:</span>
                 <span id="cartTotal" style="color: var(--accent); font-weight:bold;">$0.00</span>
             </div>
-            <button class="checkout-btn" onclick="checkout()">Checkout</button>
+
+            <!-- Berry Points Display -->
+            <div style="background: rgba(224, 176, 255, 0.1); padding: 12px; border-radius: 8px; margin-bottom: 15px; text-align: center; border: 1px solid rgba(224, 176, 255, 0.3);">
+                <div style="font-size: 0.85rem; opacity: 0.8; margin-bottom: 5px;">Berry Points</div>
+                <div style="font-size: 1.5rem; color: var(--accent); font-weight: bold;" id="cartBerryPoints">0</div>
+            </div>
+
+            <!-- Promo Code Input -->
+            <div class="promo-input-group">
+                <input type="text" id="promoInput" placeholder="Enter promo code" style="background: rgba(255,255,255,0.05); border: 1px solid rgba(224, 176, 255, 0.3); border-radius: 8px; color: var(--text-white); padding: 10px; font-family: 'Poppins', sans-serif;">
+                <button class="promo-btn" onclick="applyPromoCode()">Apply</button>
+            </div>
+            <div id="promoMessage" style="display:none;"></div>
+
+            <button class="checkout-btn" onclick="openCheckoutModal()">Checkout</button>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-content">
+            <button class="login-close-btn" onclick="closeLoginModal()"><i data-lucide="x"></i></button>
+            <h2 class="login-title">Berry Booth</h2>
+            <p class="login-subtitle">Welcome to your account</p>
+            <input type="text" id="loginUsername" class="login-input" placeholder="Enter your username">
+            <button class="login-btn" onclick="handleLogin()">Sign In</button>
+            <div class="login-divider">OR</div>
+            <button class="demo-login-btn" onclick="quickDemoLogin()">🚀 Quick Demo Login</button>
+        </div>
+    </div>
+
+    <!-- User Profile Modal -->
+    <div class="profile-modal" id="profileModal">
+        <div class="profile-header">
+            <h3 style="color: var(--accent); margin: 0;">My Profile</h3>
+            <button class="profile-close-btn" onclick="toggleProfile()"><i data-lucide="x"></i></button>
+        </div>
+
+        <!-- User Info Section -->
+        <div class="profile-section">
+            <div style="text-align: center;">
+                <div class="user-avatar" id="profileAvatar">👤</div>
+                <h3 id="profileUsername" style="color: var(--accent); margin-bottom: 5px;">Guest</h3>
+                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.6);">Not logged in</p>
+            </div>
+        </div>
+
+        <!-- Berry Points Section -->
+        <div class="profile-section">
+            <div class="profile-section-title">Berry Points Balance</div>
+            <div class="points-display-large">
+                <div class="points-number-large" id="profileTotalPoints">0</div>
+                <div class="points-label">Available Points</div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="profile-tabs">
+            <button class="profile-tab active" onclick="switchProfileTab('history')">Order History</button>
+            <button class="profile-tab" onclick="switchProfileTab('offers')">Offers</button>
+            <button class="profile-tab" onclick="switchProfileTab('info')">Info</button>
+        </div>
+
+        <!-- Order History Tab -->
+        <div id="history-tab" class="profile-tab-content active">
+            <div class="profile-section-title">Recent Orders</div>
+            <div class="order-history-list" id="orderHistoryList">
+                <p style="font-size: 0.85rem; color: rgba(255,255,255,0.5);">No orders yet. Start shopping!</p>
+            </div>
+        </div>
+
+        <!-- Offers Tab -->
+        <div id="offers-tab" class="profile-tab-content">
+            <div class="profile-section-title">Active Offers</div>
+            <div class="offers-grid" id="offersGrid">
+                <!-- Offers populated by JS -->
+            </div>
+        </div>
+
+        <!-- Info Tab -->
+        <div id="info-tab" class="profile-tab-content">
+            <div class="profile-section-title">Account Information</div>
+            <div style="background: rgba(255,255,255,0.03); border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Username</p>
+                <p id="profileInfoUsername" style="color: var(--accent); font-weight: 600; margin-bottom: 15px;">Guest</p>
+
+                <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Phone Number</p>
+                <p id="profileInfoPhone" style="color: rgba(255,255,255,0.8); margin-bottom: 15px;">Not set</p>
+
+                <p style="font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-bottom: 8px;">Saved Location</p>
+                <p id="profileInfoLocation" style="color: rgba(255,255,255,0.8); font-size: 0.8rem;">Not set</p>
+            </div>
+            <button class="btn-secondary" style="width: 100%; padding: 12px; border-radius: 8px; cursor: pointer;" onclick="handleLogout()">Log Out</button>
         </div>
     </div>
 
@@ -705,6 +1682,17 @@
                 <i data-lucide="arrow-left"></i> Home
             </div>
             <h2>Menu</h2>
+        </div>
+
+        <!-- Search & Filter Section -->
+        <div class="search-filter-container">
+            <input type="text" class="search-bar" id="searchBar" placeholder="🔍 Search items by name..." oninput="filterBySearch()">
+            <div class="dietary-filters">
+                <div class="dietary-pill active" data-diet="all" onclick="filterByDietary('all')">All</div>
+                <div class="dietary-pill" data-diet="gluten-free" onclick="filterByDietary('gluten-free')">🌾 Gluten-Free</div>
+                <div class="dietary-pill" data-diet="vegan" onclick="filterByDietary('vegan')">🌱 Vegan</div>
+                <div class="dietary-pill" data-diet="low-sugar" onclick="filterByDietary('low-sugar')">🍬 Low Sugar</div>
+            </div>
         </div>
 
         <!-- Category Dropdown Menu -->
@@ -737,8 +1725,9 @@
         <div class="menu-section-content" data-category="desserts">
             <h3 class="section-title" id="desserts">Sweet Treats</h3>
             <div class="grid-container">
-            <div class="card" onclick="openModal('Blueberry Pie', 'Freshly baked with a golden crust and overflowing with warm blueberry filling.', 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=600&q=80', 15.00)">
-                <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=600&q=80" alt="Pie" class="card-img">
+            <div class="card" data-name="Blueberry Pie" data-dietary="gluten-free,low-sugar" onclick="openModal('Blueberry Pie', 'Freshly baked with a golden crust and overflowing with warm blueberry filling.', 'https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=600&q=80', 15.00)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Pie" class="card-img loading">
                 <div class="card-info">
                     <h3>Blueberry Pie</h3>
                     <div class="price-tag">$15.00</div>
@@ -746,8 +1735,9 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openModal('Berry Smoothie', 'A refreshing blend of antioxidants, yogurt, and fresh blueberries.', 'https://images.unsplash.com/photo-1490474504059-bf2e481402b8?auto=format&fit=crop&w=600&q=80', 6.50)">
-                <img src="https://wholefoodsoulfoodkitchen.com/wp-content/uploads/2022/07/frozen-berry-smoothie-4-1.jpg" alt="Smoothie" class="card-img">
+            <div class="card" data-name="Berry Smoothie" data-dietary="vegan,gluten-free" onclick="openModal('Berry Smoothie', 'A refreshing blend of antioxidants, yogurt, and fresh blueberries.', 'https://www.savorynothings.com/wp-content/uploads/2018/05/Mixed-Berry-Smoothie-Recipe-Image-16.jpg', 6.50)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Smoothie" class="card-img loading">
                 <div class="card-info">
                     <h3>Berry Smoothie</h3>
                     <div class="price-tag">$6.50</div>
@@ -755,8 +1745,9 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openModal('Muffins', 'Soft, fluffy, and filled with bursting berries. Comes in a pack of 2.', 'https://images.unsplash.com/photo-1567304445867-20f0a850169d?auto=format&fit=crop&w=600&q=80', 4.00)">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSzRngkILuZvWpwkOj6qu8jfHsEZLemc-GcKA&s" alt="Muffins" class="card-img">
+            <div class="card" data-name="Muffins" data-dietary="gluten-free,low-sugar" onclick="openModal('Muffins', 'Soft, fluffy, and filled with bursting berries. Comes in a pack of 2.', 'https://www.forksoverknives.com/uploads/2025/02/Triple-Berry-Muffins-Wordpress.jpg?auto=webp', 4.00)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Muffins" class="card-img loading">
                 <div class="card-info">
                     <h3>Muffins (2pk)</h3>
                     <div class="price-tag">$4.00</div>
@@ -770,8 +1761,9 @@
         <div class="menu-section-content" data-category="meals">
             <h3 class="section-title" id="meals">Savory Meals</h3>
             <div class="grid-container">
-            <div class="card" onclick="openModal('Blueberry Balsamic Salad', 'Fresh spinach, goat cheese, candied pecans, and blueberries with a balsamic glaze.', 'https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?auto=format&fit=crop&w=600&q=80', 12.00)">
-                <img src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?auto=format&fit=crop&w=600&q=80" alt="Salad" class="card-img">
+            <div class="card" data-name="Blueberry Balsamic Salad" data-dietary="vegan,gluten-free,low-sugar" onclick="openModal('Blueberry Balsamic Salad', 'Fresh spinach, goat cheese, candied pecans, and blueberries with a balsamic glaze.', 'https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?auto=format&fit=crop&w=600&q=80', 12.00)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Salad" class="card-img loading">
                 <div class="card-info">
                     <h3>Blueberry Balsamic Salad</h3>
                     <div class="price-tag">$12.00</div>
@@ -779,8 +1771,9 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openModal('Turkey & Brie Panini', 'Roasted turkey, melted brie, and a hint of blueberry chutney on sourdough.', 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80', 11.50)">
-                <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80" alt="Sandwich" class="card-img">
+            <div class="card" data-name="Turkey & Brie Panini" data-dietary="gluten-free" onclick="openModal('Turkey & Brie Panini', 'Roasted turkey, melted brie, and a hint of blueberry chutney on sourdough.', 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80', 11.50)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Sandwich" class="card-img loading">
                 <div class="card-info">
                     <h3>Turkey & Brie Panini</h3>
                     <div class="price-tag">$11.50</div>
@@ -788,8 +1781,9 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openModal('Quinoa Power Bowl', 'A healthy mix of quinoa, avocado, chickpeas, and fresh berries.', 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80', 13.00)">
-                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80" alt="Bowl" class="card-img">
+            <div class="card" data-name="Quinoa Power Bowl" data-dietary="vegan,gluten-free,low-sugar" onclick="openModal('Quinoa Power Bowl', 'A healthy mix of quinoa, avocado, chickpeas, and fresh berries.', 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=600&q=80', 13.00)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Bowl" class="card-img loading">
                 <div class="card-info">
                     <h3>Quinoa Power Bowl</h3>
                     <div class="price-tag">$13.00</div>
@@ -803,8 +1797,9 @@
         <div class="menu-section-content" data-category="snacks">
             <h3 class="section-title" id="snacks">Light Snacks</h3>
             <div class="grid-container">
-            <div class="card" onclick="openModal('Yogurt Parfait', 'Greek yogurt layered with homemade granola and berry compote.', 'https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=600&q=80', 5.50)">
-                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=600&q=80" alt="Parfait" class="card-img">
+            <div class="card" data-name="Yogurt Parfait" data-dietary="gluten-free" onclick="openModal('Yogurt Parfait', 'Greek yogurt layered with homemade granola and berry compote.', 'https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=600&q=80', 5.50)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Parfait" class="card-img loading">
                 <div class="card-info">
                     <h3>Yogurt Parfait</h3>
                     <div class="price-tag">$5.50</div>
@@ -812,8 +1807,9 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openModal('Fruit Cup', 'A seasonal selection of the freshest berries and melon.', 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80', 4.50)">
-                <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80" alt="Fruit Cup" class="card-img">
+            <div class="card" data-name="Fruit Cup" data-dietary="vegan,gluten-free,low-sugar" onclick="openModal('Fruit Cup', 'A seasonal selection of the freshest berries and melon.', 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&w=600&q=80', 4.50)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Fruit Cup" class="card-img loading">
                 <div class="card-info">
                     <h3>Fruit Cup</h3>
                     <div class="price-tag">$4.50</div>
@@ -821,8 +1817,9 @@
                 </div>
             </div>
 
-            <div class="card" onclick="openModal('Oat Energy Bar', 'Homemade bar with oats, honey, and dried blueberries.', 'https://images.unsplash.com/photo-1525059696034-4967a8e1dca2?auto=format&fit=crop&w=600&q=80', 3.50)">
-                <img src="https://images.unsplash.com/photo-1525059696034-4967a8e1dca2?auto=format&fit=crop&w=600&q=80" alt="Energy Bar" class="card-img">
+            <div class="card" data-name="Oat Energy Bar" data-dietary="vegan,gluten-free" onclick="openModal('Oat Energy Bar', 'Homemade bar with oats, honey, and dried blueberries.', 'https://images.unsplash.com/photo-1525059696034-4967a8e1dca2?auto=format&fit=crop&w=600&q=80', 3.50)">
+                <button class="favorite-btn" onclick="event.stopPropagation(); toggleFavorite(this)"><i data-lucide="heart"></i></button>
+                <img src="" alt="Energy Bar" class="card-img loading">
                 <div class="card-info">
                     <h3>Oat Energy Bar</h3>
                     <div class="price-tag">$3.50</div>
@@ -860,6 +1857,125 @@
         </footer>
     </section>
 
+    <!-- Checkout Modal -->
+    <div class="checkout-modal" id="checkoutModal">
+        <div class="checkout-content">
+            <div class="checkout-header">
+                <h3>Checkout</h3>
+                <button class="close-btn" style="position:relative; top:0; right:0; background:rgba(0,0,0,0.3);" onclick="closeCheckoutModal()">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <!-- Step 1: Identity & Location -->
+            <div class="checkout-step active" id="step1">
+                <div class="checkout-progress">
+                    <div class="progress-indicator active">1</div>
+                    <div class="progress-indicator">2</div>
+                    <div class="progress-indicator">3</div>
+                </div>
+                <h3 style="margin-bottom: 20px; color: var(--accent);">Identity & Location</h3>
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" id="customerName" placeholder="John Doe">
+                </div>
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <input type="tel" id="customerPhone" placeholder="+1 (555) 123-4567">
+                </div>
+                
+                <!-- Location Pinpoint Card -->
+                <div class="location-card" id="locationCard">
+                    <div class="location-status-icon" id="locationIcon">📍</div>
+                    <p style="margin-bottom: 10px; opacity: 0.9;">Precise Location Pinpoint</p>
+                    <p style="opacity: 0.6; font-size: 0.85rem; margin-bottom: 15px;">Click below to get your exact delivery coordinates</p>
+                    <button class="get-location-btn" id="getLocationBtn" onclick="getGeolocation()">
+                        <span id="locationBtnText"><i data-lucide="map-pin" style="width: 18px; height: 18px;"></i> Get Precise Location</span>
+                    </button>
+                    <div class="location-coords" id="locationCoords" style="display: none;">
+                        Latitude: <span id="coordLat">--</span><br>
+                        Longitude: <span id="coordLng">--</span>
+                    </div>
+                </div>
+                <input type="hidden" id="customerLat">
+                <input type="hidden" id="customerLng">
+                
+                <div class="checkout-btn-group">
+                    <button class="btn-secondary" onclick="closeCheckoutModal()">Back</button>
+                    <button class="btn-primary" id="proceedBtn" onclick="proceedToStep2()" disabled style="opacity: 0.6; cursor: not-allowed;">Next (Get Location)</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Order Summary -->
+            <div class="checkout-step" id="step2">
+                <div class="checkout-progress">
+                    <div class="progress-indicator completed">✓</div>
+                    <div class="progress-indicator active">2</div>
+                    <div class="progress-indicator">3</div>
+                </div>
+                <h3 style="margin-bottom: 20px; color: var(--accent);">Order Summary</h3>
+                <div id="checkoutOrderItems" style="margin-bottom: 20px;">
+                    <!-- Items will be inserted here -->
+                </div>
+                <div class="order-summary-total">
+                    <span>Subtotal:</span>
+                    <span id="checkoutSubtotal">$0.00</span>
+                </div>
+                <div id="checkoutDiscountLine" style="display:none; justify-content:space-between; padding: 10px 0; color: var(--success); font-weight: bold;">
+                    <span>Discount:</span>
+                    <span id="checkoutDiscount">-$0.00</span>
+                </div>
+                <div class="order-summary-total" style="border-top: none; margin-top: 0; padding-top: 0;">
+                    <span>Total:</span>
+                    <span id="checkoutTotal">$0.00</span>
+                </div>
+
+                <!-- Berry Points Redemption -->
+                <div style="background: rgba(224, 176, 255, 0.1); border: 1px solid rgba(224, 176, 255, 0.3); border-radius: 10px; padding: 15px; margin: 20px 0;">
+                    <p style="font-size: 0.85rem; margin-bottom: 10px; color: var(--accent); font-weight: 600;">Redeem Berry Points</p>
+                    <p style="font-size: 0.8rem; margin-bottom: 10px; color: rgba(255,255,255,0.6);">Available: <span id="availablePointsDisplay">0</span> points</p>
+                    <input type="range" id="pointsRedemptionSlider" min="0" max="100" value="0" style="width: 100%; margin-bottom: 10px; cursor: pointer;" oninput="updatePointsRedemption()">
+                    <p id="pointsRedemptionText" style="font-size: 0.9rem; color: var(--accent); text-align: center;">Use 0 points for $0.00 off</p>
+                </div>
+
+                <div class="checkout-btn-group">
+                    <button class="btn-secondary" onclick="backToStep1()">Back</button>
+                    <button class="btn-primary" onclick="proceedToStep3()">Complete Order</button>
+                </div>
+            </div>
+
+            <!-- Step 3: Success -->
+            <div class="checkout-step" id="step3">
+                <div class="checkout-progress">
+                    <div class="progress-indicator completed">✓</div>
+                    <div class="progress-indicator completed">✓</div>
+                    <div class="progress-indicator active">3</div>
+                </div>
+                <div class="receipt">
+                    <div class="receipt-icon">✓</div>
+                    <h3 style="color: var(--success); margin-bottom: 10px;">Order Confirmed!</h3>
+                    <p style="opacity: 0.8; margin-bottom: 15px;">Thank you for your order. It will be delivered soon.</p>
+                </div>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <p style="margin-bottom: 10px; opacity: 0.8;">Order ID:</p>
+                    <div class="order-id" id="orderId">ORD-00000</div>
+                </div>
+                <div class="order-summary-total" style="justify-content: center; flex-direction: column; text-align: center; border: none; margin: 20px 0;">
+                    <p style="margin-bottom: 10px; opacity: 0.8;">Order Total:</p>
+                    <span id="receiptTotal" style="font-size: 1.5rem;">$0.00</span>
+                </div>
+                <div class="berry-points-display">
+                    <p style="margin-bottom: 10px;">🎉 You Earned</p>
+                    <div class="points-number" id="pointsEarned">0</div>
+                    <p>Berry Points</p>
+                </div>
+                <div class="checkout-btn-group">
+                    <button class="btn-primary" style="flex: 1;" onclick="completeCheckout()">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Details View -->
     <div class="modal" id="productModal">
         <div class="modal-content">
@@ -889,15 +2005,225 @@
         lucide.createIcons();
 
         /* --- STATE MANAGEMENT --- */
-        let cart = []; // Array of { title, price, qty }
+        let cart = [];
         let currentProduct = {};
         let currentModalQty = 1;
+        let currentDietaryFilter = 'all';
+        let currentSearchQuery = '';
+        let appliedDiscount = 0;
+        let appliedPromoCode = '';
+        let berryPoints = 0;
+        let orderHistory = [];
+        let isLoggedIn = false;
+        let currentUser = { username: '', phone: '', location: { lat: null, lng: null } };
 
-        // Initialize menu - show all items by default
+        // Initialize on page load
         document.addEventListener('DOMContentLoaded', function() {
             const sections = document.querySelectorAll('.menu-section-content');
             sections.forEach(section => section.classList.add('active'));
+            
+            loadAllDataFromStorage();
+            loadProductImages();
+            checkLoginStatus();
+            populateOffers();
+            
+            // Show login modal if not logged in
+            if (!isLoggedIn) {
+                showLoginModal();
+            }
         });
+
+        /* --- AUTHENTICATION --- */
+        function showLoginModal() {
+            document.getElementById('loginModal').classList.add('open');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('open');
+        }
+
+        function handleLogin() {
+            const username = document.getElementById('loginUsername').value.trim();
+            if (!username) {
+                showToast('Please enter a username', true);
+                return;
+            }
+            loginUser(username);
+        }
+
+        function quickDemoLogin() {
+            loginUser('Berry Fanatic');
+        }
+
+        function loginUser(username) {
+            currentUser = {
+                username: username,
+                phone: '',
+                location: { lat: null, lng: null }
+            };
+            isLoggedIn = true;
+            saveUserDataToStorage();
+            closeLoginModal();
+            updateUserUI();
+            showToast(`Welcome, ${username}! 🎉`, false);
+        }
+
+        function handleLogout() {
+            isLoggedIn = false;
+            currentUser = { username: '', phone: '', location: { lat: null, lng: null } };
+            cart = [];
+            berryPoints = 0;
+            orderHistory = [];
+            localStorage.clear();
+            toggleProfile();
+            showLoginModal();
+            showToast('Logged out', false);
+        }
+
+        function updateUserUI() {
+            const initial = currentUser.username.charAt(0).toUpperCase();
+            document.getElementById('profileAvatar').innerText = initial;
+            document.getElementById('profileUsername').innerText = currentUser.username;
+            document.getElementById('profileInfoUsername').innerText = currentUser.username;
+        }
+
+        function checkLoginStatus() {
+            const saved = localStorage.getItem('berryBoothUser');
+            if (saved) {
+                currentUser = JSON.parse(saved);
+                isLoggedIn = true;
+                updateUserUI();
+            }
+        }
+
+        /* --- PROFILE MANAGEMENT --- */
+        function toggleProfile() {
+            document.getElementById('profileModal').classList.toggle('open');
+            if (document.getElementById('profileModal').classList.contains('open')) {
+                updateProfileDisplay();
+            }
+        }
+
+        function updateProfileDisplay() {
+            document.getElementById('profileTotalPoints').innerText = berryPoints.toLocaleString();
+            document.getElementById('profileInfoPhone').innerText = currentUser.phone || 'Not set';
+            if (currentUser.location.lat && currentUser.location.lng) {
+                document.getElementById('profileInfoLocation').innerText = `${currentUser.location.lat.toFixed(4)}, ${currentUser.location.lng.toFixed(4)}`;
+            }
+            updateOrderHistory();
+        }
+
+        function switchProfileTab(tab) {
+            // Hide all tabs
+            document.querySelectorAll('.profile-tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.profile-tab').forEach(el => el.classList.remove('active'));
+            
+            // Show selected tab
+            document.getElementById(tab + '-tab').classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function updateOrderHistory() {
+            const container = document.getElementById('orderHistoryList');
+            if (orderHistory.length === 0) {
+                container.innerHTML = '<p style="font-size: 0.85rem; color: rgba(255,255,255,0.5);">No orders yet. Start shopping!</p>';
+                return;
+            }
+            container.innerHTML = orderHistory.map(order => `
+                <div class="order-history-item">
+                    <div class="order-history-date">${new Date(order.date).toLocaleDateString()}</div>
+                    <div class="order-history-items">${order.items.map(i => i.title).join(', ')}</div>
+                    <div class="order-history-total">Total: $${order.total.toFixed(2)} | +${order.pointsEarned} pts</div>
+                </div>
+            `).join('');
+        }
+
+        /* --- OFFERS & POINTS MANAGEMENT --- */
+        const PROMO_CODES = {
+            'BERRY10': { discount: 10, label: 'BERRY10 - 10% Off' },
+            'BLUEBERRY15': { discount: 15, label: 'BLUEBERRY15 - 15% Off' },
+            'SUMMER20': { discount: 20, label: 'SUMMER20 - 20% Off' },
+            'FREESHIP': { discount: 5, label: 'FREESHIP - Free Shipping (5% Off)' }
+        };
+
+        function populateOffers() {
+            const offersGrid = document.getElementById('offersGrid');
+            offersGrid.innerHTML = Object.entries(PROMO_CODES).map(([code, info]) => `
+                <div class="offer-card" onclick="copyAndApplyOffer('${code}')">
+                    <div class="offer-text">${info.label}</div>
+                    <button class="offer-copy-btn" onclick="event.stopPropagation(); copyOffer('${code}')">Copy</button>
+                </div>
+            `).join('');
+        }
+
+        function copyOffer(code) {
+            navigator.clipboard.writeText(code);
+            showToast(`Copied: ${code}`, false);
+        }
+
+        function copyAndApplyOffer(code) {
+            navigator.clipboard.writeText(code);
+            document.getElementById('promoInput').value = code;
+            applyPromoCode();
+            toggleProfile();
+            showToast(`Applied: ${code}`, false);
+        }
+
+        /* --- DATA PERSISTENCE --- */
+        function loadAllDataFromStorage() {
+            const savedCart = localStorage.getItem('berryBoothCart');
+            const savedDiscount = localStorage.getItem('berryBoothDiscount');
+            const savedPromo = localStorage.getItem('berryBoothPromoCode');
+            const savedPoints = localStorage.getItem('berryBoothPoints');
+            const savedOrders = localStorage.getItem('berryBoothOrders');
+            const savedUser = localStorage.getItem('berryBoothUser');
+
+            if (savedCart) cart = JSON.parse(savedCart);
+            if (savedDiscount) appliedDiscount = parseInt(savedDiscount);
+            if (savedPromo) appliedPromoCode = savedPromo;
+            if (savedPoints) berryPoints = parseInt(savedPoints);
+            if (savedOrders) orderHistory = JSON.parse(savedOrders);
+            if (savedUser) currentUser = JSON.parse(savedUser);
+
+            updateCartUI();
+        }
+
+        function saveAllDataToStorage() {
+            localStorage.setItem('berryBoothCart', JSON.stringify(cart));
+            localStorage.setItem('berryBoothDiscount', appliedDiscount.toString());
+            localStorage.setItem('berryBoothPromoCode', appliedPromoCode);
+            localStorage.setItem('berryBoothPoints', berryPoints.toString());
+            localStorage.setItem('berryBoothOrders', JSON.stringify(orderHistory));
+            saveUserDataToStorage();
+        }
+
+        function saveUserDataToStorage() {
+            localStorage.setItem('berryBoothUser', JSON.stringify(currentUser));
+            localStorage.setItem('berryBoothLoggedIn', isLoggedIn.toString());
+        }
+
+        /* --- IMAGE LOADING WITH SKELETON --- */
+        function loadProductImages() {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                const img = card.querySelector('.card-img');
+                if (img) {
+                    const src = card.getAttribute('onclick').match(/'(https?[^']+)'/)?.[1];
+                    if (src) {
+                        const tempImg = new Image();
+                        tempImg.onload = () => {
+                            img.src = src;
+                            img.classList.remove('loading');
+                        };
+                        tempImg.onerror = () => {
+                            img.src = src; // Fallback: show broken image
+                            img.classList.remove('loading');
+                        };
+                        tempImg.src = src;
+                    }
+                }
+            });
+        }
 
         /* --- NAVIGATION --- */
         function showMenu() {
@@ -908,7 +2234,7 @@
             setTimeout(() => {
                 hero.style.display = 'none';
                 menu.classList.add('active');
-            }, 500); // Matches CSS transition
+            }, 500);
         }
 
         function goHome() {
@@ -918,10 +2244,45 @@
             menu.classList.remove('active');
             setTimeout(() => {
                 hero.style.display = 'flex';
-                // Trigger reflow
                 void hero.offsetWidth; 
                 hero.classList.remove('hidden');
             }, 500);
+        }
+
+        /* --- SEARCH & FILTER FUNCTIONALITY --- */
+        function filterBySearch() {
+            currentSearchQuery = document.getElementById('searchBar').value.toLowerCase();
+            applyFilters();
+        }
+
+        function filterByDietary(diet) {
+            currentDietaryFilter = diet;
+            
+            // Update active pill
+            document.querySelectorAll('.dietary-pill').forEach(pill => {
+                pill.classList.remove('active');
+                if (pill.dataset.diet === diet) pill.classList.add('active');
+            });
+            
+            applyFilters();
+        }
+
+        function applyFilters() {
+            const cards = document.querySelectorAll('.card');
+            
+            cards.forEach(card => {
+                const name = card.dataset.name.toLowerCase();
+                const dietary = card.dataset.dietary ? card.dataset.dietary.split(',') : [];
+                
+                // Check search match
+                const searchMatch = name.includes(currentSearchQuery);
+                
+                // Check dietary match
+                const dietMatch = currentDietaryFilter === 'all' || dietary.includes(currentDietaryFilter);
+                
+                // Show/hide card
+                card.style.display = (searchMatch && dietMatch) ? 'flex' : 'none';
+            });
         }
 
         /* --- CATEGORY DROPDOWN MENU --- */
@@ -930,7 +2291,6 @@
             const icon = document.getElementById('dropdownIcon');
             dropdown.classList.toggle('open');
             
-            // Rotate icon
             if (dropdown.classList.contains('open')) {
                 icon.style.transform = 'rotate(180deg)';
             } else {
@@ -944,11 +2304,9 @@
             const dropdown = document.getElementById('categoryDropdown');
             const dropdownItems = document.querySelectorAll('.category-dropdown-item');
             
-            // Close dropdown
             dropdown.classList.remove('open');
             document.getElementById('dropdownIcon').style.transform = 'rotate(0deg)';
             
-            // Update active state in dropdown items
             dropdownItems.forEach(item => {
                 item.classList.remove('active');
                 if (item.dataset.category === category) {
@@ -956,7 +2314,6 @@
                 }
             });
             
-            // Filter sections
             sections.forEach(section => {
                 if (category === 'all') {
                     section.classList.add('active');
@@ -968,7 +2325,6 @@
                         section.classList.remove('active');
                     }
                     
-                    // Update selected category text
                     const categoryNames = {
                         'desserts': 'Sweet Treats',
                         'meals': 'Savory Meals',
@@ -978,11 +2334,9 @@
                 }
             });
             
-            // Re-initialize icons after filtering
             lucide.createIcons();
         }
 
-        // Close dropdown when clicking outside
         document.addEventListener('click', function(event) {
             const dropdown = document.getElementById('categoryDropdown');
             const dropdownBtn = document.querySelector('.category-dropdown-btn');
@@ -992,6 +2346,45 @@
                 document.getElementById('dropdownIcon').style.transform = 'rotate(0deg)';
             }
         });
+
+        /* --- FAVORITE BUTTON --- */
+        function toggleFavorite(btn) {
+            btn.classList.toggle('favorited');
+        }
+
+        /* --- FLY TO CART ANIMATION --- */
+        function animateFlyToCart(button) {
+            const cartIcon = document.querySelector('.cart-trigger');
+            const buttonRect = button.getBoundingClientRect();
+            const cartRect = cartIcon.getBoundingClientRect();
+            
+            const flyer = document.createElement('div');
+            flyer.className = 'flying-cart-item';
+            flyer.innerHTML = '<i data-lucide="shopping-bag" style="color: var(--accent);"></i>';
+            flyer.style.left = buttonRect.left + 'px';
+            flyer.style.top = buttonRect.top + 'px';
+            flyer.style.width = '30px';
+            flyer.style.height = '30px';
+            flyer.style.display = 'flex';
+            flyer.style.alignItems = 'center';
+            flyer.style.justifyContent = 'center';
+            
+            document.body.appendChild(flyer);
+            lucide.createIcons();
+            
+            // Animate
+            setTimeout(() => {
+                flyer.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+                flyer.style.left = cartRect.left + 'px';
+                flyer.style.top = cartRect.top + 'px';
+                flyer.style.opacity = '0';
+                flyer.style.transform = 'scale(0.3)';
+            }, 10);
+            
+            setTimeout(() => {
+                flyer.remove();
+            }, 600);
+        }
 
         /* --- MODAL LOGIC --- */
         const modal = document.getElementById('productModal');
@@ -1004,7 +2397,7 @@
 
         function openModal(title, desc, imgSrc, price) {
             currentProduct = { title, price, imgSrc };
-            currentModalQty = 1; // Reset qty
+            currentModalQty = 1;
             updateModalQtyUI();
 
             modalTitle.innerText = title;
@@ -1012,8 +2405,10 @@
             modalPrice.innerText = `$${price.toFixed(2)}`;
             modalImg.src = imgSrc;
             
-            // Set onclick for the button inside modal
-            addToCartBtn.onclick = () => addToCart(currentProduct, currentModalQty);
+            addToCartBtn.onclick = () => {
+                addToCart(currentProduct, currentModalQty);
+                animateFlyToCart(addToCartBtn);
+            };
 
             modal.classList.add('open');
         }
@@ -1037,10 +2432,11 @@
         window.onclick = function(event) {
             if (event.target == modal) {
                 closeModal();
+            } else if (event.target == document.getElementById('checkoutModal')) {
+                // Don't close checkout modal on background click for safety
             } else if (event.target != document.getElementById('cartSidebar') && 
                        event.target.closest('.cart-sidebar') == null && 
                        event.target.closest('.cart-trigger') == null) {
-                // Close cart if clicking outside
                 document.getElementById('cartSidebar').classList.remove('open');
             }
         }
@@ -1051,7 +2447,6 @@
         }
 
         function addToCart(product, qty) {
-            // Check if item exists
             const existingItem = cart.find(item => item.title === product.title);
             
             if (existingItem) {
@@ -1061,6 +2456,7 @@
             }
 
             updateCartUI();
+            saveAllDataToStorage();
             showToast(`${qty}x ${product.title} added!`);
             closeModal();
         }
@@ -1068,6 +2464,7 @@
         function removeFromCart(index) {
             cart.splice(index, 1);
             updateCartUI();
+            saveAllDataToStorage();
         }
 
         function adjustCartQty(index, change) {
@@ -1079,32 +2476,35 @@
             } else {
                 item.qty = newQty;
                 updateCartUI();
+                saveAllDataToStorage();
             }
         }
 
         function updateCartUI() {
             const cartCount = document.getElementById('cartCount');
             const cartItemsContainer = document.getElementById('cartItems');
+            const cartSubtotal = document.getElementById('cartSubtotal');
             const cartTotal = document.getElementById('cartTotal');
+            const cartBerryPoints = document.getElementById('cartBerryPoints');
+            const discountLine = document.getElementById('discountLine');
+            const discountAmount = document.getElementById('discountAmount');
 
-            // Calculate total qty for badge
             const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
 
-            // Update Badge
             cartCount.innerText = totalQty;
             if (totalQty > 0) cartCount.classList.add('active');
             else cartCount.classList.remove('active');
 
-            // Update List
             cartItemsContainer.innerHTML = '';
-            let totalPrice = 0;
+            let subtotalPrice = 0;
 
             if (cart.length === 0) {
                 cartItemsContainer.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.5); margin-top: 20px;">Your cart is empty.</p>';
+                cartBerryPoints.innerText = '0';
             } else {
                 cart.forEach((item, index) => {
                     const itemTotal = item.price * item.qty;
-                    totalPrice += itemTotal;
+                    subtotalPrice += itemTotal;
                     
                     const el = document.createElement('div');
                     el.className = 'cart-item';
@@ -1124,21 +2524,361 @@
                     `;
                     cartItemsContainer.appendChild(el);
                 });
-                lucide.createIcons(); // Re-init icons for new elements
+                lucide.createIcons();
+                
+                // Calculate Berry Points (10 points per $1)
+                const points = Math.floor(subtotalPrice * 10);
+                cartBerryPoints.innerText = points;
+            }
+
+            cartSubtotal.innerText = `$${subtotalPrice.toFixed(2)}`;
+            
+            // Apply discount
+            const discountAmount_val = (subtotalPrice * appliedDiscount) / 100;
+            const totalPrice = subtotalPrice - discountAmount_val;
+
+            if (appliedDiscount > 0) {
+                discountLine.style.display = 'flex';
+                discountAmount.innerText = `-$${discountAmount_val.toFixed(2)}`;
+            } else {
+                discountLine.style.display = 'none';
             }
 
             cartTotal.innerText = `$${totalPrice.toFixed(2)}`;
         }
 
-        function checkout() {
+        /* --- PROMO CODE LOGIC --- */
+        function applyPromoCode() {
+            const promoInput = document.getElementById('promoInput');
+            const code = promoInput.value.toUpperCase().trim();
+            const promoMessage = document.getElementById('promoMessage');
+            
+            if (!code) {
+                showPromoMessage('Please enter a promo code', false);
+                return;
+            }
+            
+            // Valid promo codes
+            const promoCodes = {
+                'BERRY10': 10,
+                'BLUEBERRY15': 15,
+                'SUMMER20': 20
+            };
+            
+            if (promoCodes[code]) {
+                appliedDiscount = promoCodes[code];
+                appliedPromoCode = code;
+                promoInput.value = '';
+                promoInput.placeholder = `✓ ${code} applied (${appliedDiscount}% off)`;
+                showPromoMessage(`${appliedDiscount}% discount applied!`, true);
+                updateCartUI();
+            } else {
+                appliedDiscount = 0;
+                appliedPromoCode = '';
+                promoInput.placeholder = 'Enter promo code';
+                showPromoMessage('Invalid promo code', false);
+            }
+        }
+
+        function showPromoMessage(message, isSuccess) {
+            const promoMessage = document.getElementById('promoMessage');
+            promoMessage.style.display = 'block';
+            promoMessage.className = `promo-message ${isSuccess ? 'success' : 'error'}`;
+            promoMessage.innerText = message;
+            
+            setTimeout(() => {
+                promoMessage.style.display = 'none';
+            }, 3000);
+        }
+
+        /* --- LOCALSTORAGE PERSISTENCE --- */
+        function saveCartToStorage() {
+            localStorage.setItem('berryBoothCart', JSON.stringify(cart));
+            localStorage.setItem('berryBoothDiscount', appliedDiscount);
+            localStorage.setItem('berryBoothPromoCode', appliedPromoCode);
+        }
+
+        function loadCartFromStorage() {
+            const savedCart = localStorage.getItem('berryBoothCart');
+            const savedDiscount = localStorage.getItem('berryBoothDiscount');
+            const savedPromo = localStorage.getItem('berryBoothPromoCode');
+            
+            if (savedCart) {
+                cart = JSON.parse(savedCart);
+                appliedDiscount = savedDiscount ? parseInt(savedDiscount) : 0;
+                appliedPromoCode = savedPromo || '';
+                updateCartUI();
+            }
+        }
+
+        /* --- CHECKOUT MODAL LOGIC --- */
+        function openCheckoutModal() {
             if (cart.length === 0) {
                 showToast("Your cart is empty!", true);
                 return;
             }
-            alert(`Thank you! Your total is $${document.getElementById('cartTotal').innerText}`);
+            
+            // Auto-fill if logged in
+            if (isLoggedIn) {
+                document.getElementById('customerName').value = currentUser.username;
+                document.getElementById('customerPhone').value = currentUser.phone;
+                if (currentUser.location.lat && currentUser.location.lng) {
+                    document.getElementById('customerLat').value = currentUser.location.lat;
+                    document.getElementById('customerLng').value = currentUser.location.lng;
+                    document.getElementById('locationCard').classList.add('location-locked');
+                    document.getElementById('locationIcon').innerText = '✓';
+                    document.getElementById('locationCoords').style.display = 'block';
+                    document.getElementById('coordLat').innerText = currentUser.location.lat.toFixed(6);
+                    document.getElementById('coordLng').innerText = currentUser.location.lng.toFixed(6);
+                    document.getElementById('proceedBtn').disabled = false;
+                    document.getElementById('proceedBtn').style.opacity = '1';
+                    document.getElementById('proceedBtn').innerText = 'Next';
+                }
+            }
+            
+            document.getElementById('checkoutModal').classList.add('open');
+        }
+
+        function closeCheckoutModal() {
+            document.getElementById('checkoutModal').classList.remove('open');
+            resetCheckoutModal();
+        }
+
+        function resetCheckoutModal() {
+            document.getElementById('customerName').value = '';
+            document.getElementById('customerPhone').value = '';
+            document.getElementById('customerLat').value = '';
+            document.getElementById('customerLng').value = '';
+            document.getElementById('promoInput').value = '';
+            document.getElementById('promoMessage').style.display = 'none';
+            
+            // Reset location card
+            const locationCard = document.getElementById('locationCard');
+            locationCard.classList.remove('location-locked');
+            document.getElementById('locationIcon').innerText = '📍';
+            document.getElementById('locationCoords').style.display = 'none';
+            document.getElementById('getLocationBtn').disabled = false;
+            document.getElementById('getLocationBtn').innerHTML = '<i data-lucide="map-pin" style="width: 18px; height: 18px;"></i> Get Precise Location';
+            document.getElementById('proceedBtn').disabled = true;
+            document.getElementById('proceedBtn').style.opacity = '0.6';
+            document.getElementById('proceedBtn').style.cursor = 'not-allowed';
+            document.getElementById('proceedBtn').innerText = 'Next (Get Location)';
+            lucide.createIcons();
+            
+            showCheckoutStep(1);
+        }
+
+        function showCheckoutStep(step) {
+            document.querySelectorAll('.checkout-step').forEach(el => el.classList.remove('active'));
+            document.getElementById('step' + step).classList.add('active');
+        }
+
+        /* --- GEOLOCATION FUNCTIONS --- */
+        function getGeolocation() {
+            const getLocationBtn = document.getElementById('getLocationBtn');
+            const locationCard = document.getElementById('locationCard');
+            
+            // Check if geolocation is supported
+            if (!navigator.geolocation) {
+                showToast('Geolocation is not supported by your browser', true);
+                return;
+            }
+            
+            // Disable button and show loading
+            getLocationBtn.disabled = true;
+            getLocationBtn.innerHTML = '<span class="location-loading"><i data-lucide="loader"></i></span> Getting location...';
+            lucide.createIcons();
+            
+            // Get user's location
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude.toFixed(6);
+                    const lng = position.coords.longitude.toFixed(6);
+                    const accuracy = position.coords.accuracy.toFixed(0);
+                    
+                    // Save coordinates
+                    document.getElementById('customerLat').value = lat;
+                    document.getElementById('customerLng').value = lng;
+                    
+                    // Update UI to show locked location
+                    locationCard.classList.add('location-locked');
+                    document.getElementById('locationIcon').innerText = '✓';
+                    document.getElementById('locationCoords').style.display = 'block';
+                    document.getElementById('coordLat').innerText = lat;
+                    document.getElementById('coordLng').innerText = lng;
+                    
+                    // Update button
+                    getLocationBtn.disabled = true;
+                    getLocationBtn.innerHTML = '<i data-lucide="check-circle" style="color: var(--success);"></i> Location Locked';
+                    
+                    // Enable proceed button
+                    document.getElementById('proceedBtn').disabled = false;
+                    document.getElementById('proceedBtn').style.opacity = '1';
+                    document.getElementById('proceedBtn').style.cursor = 'pointer';
+                    document.getElementById('proceedBtn').innerText = 'Next';
+                    
+                    showToast(`Location locked (±${accuracy}m accuracy)`, false);
+                    lucide.createIcons();
+                },
+                function(error) {
+                    // Handle errors
+                    let errorMsg = 'Unable to get location';
+                    
+                    if (error.code === error.PERMISSION_DENIED) {
+                        errorMsg = 'Location permission denied. Please enable location access.';
+                    } else if (error.code === error.POSITION_UNAVAILABLE) {
+                        errorMsg = 'Location information unavailable.';
+                    } else if (error.code === error.TIMEOUT) {
+                        errorMsg = 'Location request timeout.';
+                    }
+                    
+                    showToast(errorMsg, true);
+                    getLocationBtn.disabled = false;
+                    getLocationBtn.innerHTML = '<i data-lucide="map-pin"></i> Try Again';
+                    lucide.createIcons();
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        }
+
+        function proceedToStep2() {
+            const name = document.getElementById('customerName').value.trim();
+            const phone = document.getElementById('customerPhone').value.trim();
+            const lat = document.getElementById('customerLat').value;
+            const lng = document.getElementById('customerLng').value;
+            
+            if (!name || !phone) {
+                showToast('Please enter name and phone number', true);
+                return;
+            }
+            
+            if (!lat || !lng) {
+                showToast('Please get your precise location first', true);
+                return;
+            }
+
+            // Save user data if logged in
+            if (isLoggedIn) {
+                currentUser.phone = phone;
+                currentUser.location = { lat: parseFloat(lat), lng: parseFloat(lng) };
+                saveUserDataToStorage();
+            }
+            
+            showCheckoutStep(2);
+            populateOrderSummary();
+        }
+
+        function updatePointsRedemption() {
+            const slider = document.getElementById('pointsRedemptionSlider');
+            const maxPoints = Math.floor(berryPoints);
+            slider.max = maxPoints;
+            
+            const pointsToUse = parseInt(slider.value);
+            const discount = pointsToUse / 100;
+            
+            document.getElementById('pointsRedemptionText').innerText = `Use ${pointsToUse} points for $${discount.toFixed(2)} off`;
+        }
+
+        function backToStep1() {
+            showCheckoutStep(1);
+        }
+
+        function populateOrderSummary() {
+            const itemsContainer = document.getElementById('checkoutOrderItems');
+            itemsContainer.innerHTML = '';
+            
+            let subtotal = 0;
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
+                
+                const itemEl = document.createElement('div');
+                itemEl.className = 'order-summary-item';
+                itemEl.innerHTML = `
+                    <span>${item.title} x${item.qty}</span>
+                    <span>$${itemTotal.toFixed(2)}</span>
+                `;
+                itemsContainer.appendChild(itemEl);
+            });
+            
+            const discountAmount = (subtotal * appliedDiscount) / 100;
+            const total = subtotal - discountAmount;
+            
+            document.getElementById('checkoutSubtotal').innerText = `$${subtotal.toFixed(2)}`;
+            document.getElementById('checkoutTotal').innerText = `$${total.toFixed(2)}`;
+            
+            const discountLine = document.getElementById('checkoutDiscountLine');
+            if (appliedDiscount > 0) {
+                discountLine.style.display = 'flex';
+                document.getElementById('checkoutDiscount').innerText = `-$${discountAmount.toFixed(2)}`;
+            } else {
+                discountLine.style.display = 'none';
+            }
+
+            // Initialize points redemption slider
+            document.getElementById('availablePointsDisplay').innerText = Math.floor(berryPoints);
+            document.getElementById('pointsRedemptionSlider').value = 0;
+            updatePointsRedemption();
+        }
+
+        function proceedToStep3() {
+            showCheckoutStep(3);
+            populateReceiptSummary();
+        }
+
+        function populateReceiptSummary() {
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const discountAmount = (subtotal * appliedDiscount) / 100;
+            const total = subtotal - discountAmount;
+            const points = Math.floor(total * 10);
+            
+            const orderId = 'ORD-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            
+            document.getElementById('orderId').innerText = orderId;
+            document.getElementById('receiptTotal').innerText = `$${total.toFixed(2)}`;
+            document.getElementById('pointsEarned').innerText = points;
+            
+            berryPoints += points;
+        }
+
+        function completeCheckout() {
+            // Calculate order details
+            let subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            const discountAmount = (subtotal * appliedDiscount) / 100;
+            const total = subtotal - discountAmount;
+            const points = Math.floor(total * 10);
+
+            // Add to order history
+            if (isLoggedIn) {
+                orderHistory.push({
+                    date: new Date().toISOString(),
+                    items: [...cart],
+                    total: total,
+                    pointsEarned: points,
+                    discount: appliedDiscount
+                });
+            }
+
+            // Save all data
+            saveAllDataToStorage();
+            
+            // Clear cart
             cart = [];
+            appliedDiscount = 0;
+            appliedPromoCode = '';
             updateCartUI();
-            toggleCart();
+            
+            closeCheckoutModal();
+            showToast("Order placed successfully! 🎉", false);
+            
+            // Reset promo input
+            document.getElementById('promoInput').value = '';
+            document.getElementById('promoInput').placeholder = 'Enter promo code';
         }
 
         /* --- TOAST NOTIFICATIONS --- */
@@ -1157,7 +2897,6 @@
             container.appendChild(toast);
             lucide.createIcons();
 
-            // Remove after animation
             setTimeout(() => {
                 toast.remove();
             }, 3000);
